@@ -6,7 +6,7 @@ public class Concesionario {
 	private String nombre;
 	private ArrayList<Vehiculo>vehiculos;
 	private ArrayList<Cliente>clientes;
-	private ArrayList<Inventario>inventario;
+	private ArrayList<Vehiculo>inventario;
 	
 	
 	public Concesionario(String nombre) {
@@ -64,5 +64,25 @@ public class Concesionario {
 			}
 		}
 		return null;
+	}
+	//Metodos de gestion de vehiculos
+	public boolean agregarVehiculo(Vehiculo vehiculo) {
+		boolean isExistInventory=vehiculoIsExist(vehiculo);
+		if(!isExistInventory) {
+			this.inventario.add(vehiculo);
+			return true;
+		}
+		return false;
+	}
+	private boolean vehiculoIsExist(Vehiculo vehiculo) {
+		for(Vehiculo v:this.inventario) {
+			String marca=vehiculo.getMarca();
+			String modelo=vehiculo.getModelo();
+			Class<? extends Vehiculo> tipoVehiculo=vehiculo.getClass();
+			if(v.getMarca().equalsIgnoreCase(marca)||v.getModelo().equalsIgnoreCase(modelo)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

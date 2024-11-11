@@ -2,9 +2,11 @@ package Service;
 
 import javax.swing.JOptionPane;
 
+import model.Automovil;
+import model.Camion;
 import model.Cliente;
-import model.Concensionario;
 import model.Concesionario;
+import model.Motocicleta;
 
 public class Main {
 	
@@ -122,10 +124,16 @@ public class Main {
 			buscarCliente();
 			break;
 		case 4:
-			
+			actualizarInformacionCliente();
+			break;
 		}
 	}
-	private static void gestionVehiculos(int opt) {
+	private static void gestionVehiculos(int opcionSecundaria) {
+		switch(opcionSecundaria) {
+		case 1:
+			añadirVehiculo();
+			break;
+		}
 	}
 	
 	//Metodos Cliente
@@ -152,14 +160,77 @@ public class Main {
 		String direccion=JOptionPane.showInputDialog("Ingrese la direccion del usuario que desea buscar.");
 		String telefono=JOptionPane.showInputDialog("Ingrese el telefono del usuario que desea buscar.");
 		Cliente cliente=concesionario.buscarCliente(nombre, direccion, telefono);
-		
-	}
-	private static Cliente buscarCliente() {
-		return false;
-		
+		JOptionPane.showMessageDialog(null, cliente!=null ? cliente.toString():"Cliente no se encuentra registrado");
 	}
 	private static void actualizarInformacionCliente() {
+		String nombre=JOptionPane.showInputDialog("Ingrese el nombre del usuario que desea buscar.");
+		String direccion=JOptionPane.showInputDialog("Ingrese la direccion del usuario que desea buscar.");
+		String telefono=JOptionPane.showInputDialog("Ingrese el telefono del usuario que desea buscar.");
+		Cliente cliente=concesionario.buscarCliente(nombre, direccion, telefono);
+		if(cliente!=null) {
+			String nombreActualizar=JOptionPane.showInputDialog("Ingrese el nombre del usuario que desea buscar.");
+			String direccionActualizar=JOptionPane.showInputDialog("Ingrese la direccion del usuario que desea buscar.");
+			String telefonoActualizar=JOptionPane.showInputDialog("Ingrese el telefono del usuario que desea buscar.");
+			String correoActualizar=JOptionPane.showInputDialog("Ingrese el correo del cliente.");
+			cliente.setNombre(nombreActualizar);
+			cliente.setDireccion(direccionActualizar);
+			cliente.setTelefono(telefonoActualizar);
+			cliente.setCorreo(correoActualizar);
+		}
 	}
 	
-	//Metodos de 
+	//Metodos de gestion de vehiculos
+	
+	private static void añadirVehiculo() {
+		int tipoVehiculo=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el tipo de vehiculo que tiene\n 1.Automovil\n 2.Motocicleta\n 3.Camion"));
+		String marca=JOptionPane.showInputDialog("Ingrese la marca del vehiculo");
+		String modelo=JOptionPane.showInputDialog("Ingrese el modelo del vehiculo");
+		String VIN=JOptionPane.showInputDialog("Ingrese el VIN del vehiculo");
+		String color=JOptionPane.showInputDialog("Ingrese el color del vehiculo");
+		int kilometraje=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el kilometraje del vehiculo"));
+		int año=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el año del vehiculo"));
+		switch (tipoVehiculo){
+		case 1: 
+			agregarAutomovil(marca, modelo, VIN, color, kilometraje, año);
+			break;
+		case 2:
+			agregarMotocicleta(marca,modelo,VIN,color,kilometraje,año);
+			break;
+		case 3:
+			agregarCamion(marca,modelo,VIN,color,kilometraje,año);
+		}
+	}
+	private static void agregarCamion(String marca, String modelo, String vIN, String color, int kilometraje, int año) {
+		double capacidadCarga=Double.parseDouble(JOptionPane.showInputDialog("Ingrese la capacidad de carga del camion"));
+		String tipoCamion=JOptionPane.showInputDialog("Ingrese el tipo de camion");
+		int ruedas=Integer.parseInt(JOptionPane.showInputDialog("Ingrese las ruedas del camion"));
+		String tipoFreno=JOptionPane.showInputDialog("Ingrese el tipo de freno del camion");
+		int cilindraje=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el cilindraje del camion"));
+		Camion camion=new Camion(marca, modelo, vIN, color, kilometraje, año, capacidadCarga, tipoCamion, ruedas, tipoFreno, cilindraje);
+		boolean agregado=concesionario.agregarVehiculo(camion);
+		JOptionPane.showMessageDialog(null,agregado?"El vehiculo fue agregado al inventario exitosamente":"El vehiculo ya existe y no fue agregado");
+		
+	}
+
+	private static void agregarMotocicleta(String marca, String modelo, String VIN, String color, int kilometraje,
+			int año) {
+		String manillar=JOptionPane.showInputDialog("Ingrese el tipo de manillar de la moto");
+		int ruedas=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero de ruedas de su motocicleta"));
+		String tipoFreno=JOptionPane.showInputDialog("Ingrese el tipo de freno");
+		int numeroEjes=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero de ejes de la motocicleta"));
+		Motocicleta moto=new Motocicleta(marca, modelo, VIN, color, kilometraje, año, manillar, ruedas, tipoFreno, numeroEjes);
+		boolean agregado=concesionario.agregarVehiculo(moto);
+		JOptionPane.showMessageDialog(null,agregado?"El vehiculo fue agregado al inventario exitosamente":"El vehiculo ya existe y no fue agregado");
+	}
+
+	private static void agregarAutomovil(String marca, String modelo,String VIN, String color,int kilometraje,
+			int año) {
+		int puertas=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero de puertas del automovil"));
+		String tipoCombustible=JOptionPane.showInputDialog("Ingrese el tipo de combustible del automovil");
+		String transmision=JOptionPane.showInputDialog("Ingrese la transmision del vehichulo");
+		String traccion=JOptionPane.showInputDialog("Ingrese el tipo de traccion del vehiculo");
+		Automovil auto=new Automovil(marca,modelo,VIN,color,kilometraje,año,puertas,tipoCombustible,transmision,traccion);
+		boolean agregado=concesionario.agregarVehiculo(auto);
+		JOptionPane.showMessageDialog(null,agregado?"El vehiculo fue agregado al inventario exitosamente":"El vehiculo ya existe y no fue agregado");
+	}
 }
