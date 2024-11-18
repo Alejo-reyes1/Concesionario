@@ -38,6 +38,10 @@ public class Venta {
 	public void setPrecioVenta(double precioVenta) {
 		this.precioVenta = precioVenta;
 	}
+
+	public LocalDate getFechaVenta() {
+		return fechaVenta;
+	}
 	
 	
 	

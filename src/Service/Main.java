@@ -103,12 +103,26 @@ public class Main {
 	}
 
 	private static void gestionInventario(int opt) {
-		// TODO Auto-generated method stub
+		switch(opt) {
+		case 1:
+			añadirVehiculo();
+			break;
+		case 2:
+			eliminarVehiculo();
+			break;
+		case 3:
+			actualizarInventario();
+			break;
+		}
 		
 	}
 
 	private static void gestionVentas(int opt) {
-		// TODO Auto-generated method stub
+		switch(opt) {
+		case 1:
+			registrarVenta();
+			break;
+		}
 		
 	}
 
@@ -133,7 +147,14 @@ public class Main {
 		case 1:
 			añadirVehiculo();
 			break;
-		}
+		case 2:
+			eliminarVehiculo();
+			break;
+		case 3:
+			
+		case 4:
+			actualizarInformacionVehiculo();
+		}	
 	}
 	
 	//Metodos Cliente
@@ -198,6 +219,7 @@ public class Main {
 			break;
 		case 3:
 			agregarCamion(marca,modelo,VIN,color,kilometraje,año);
+			break;
 		}
 	}
 	private static void agregarCamion(String marca, String modelo, String vIN, String color, int kilometraje, int año) {
@@ -233,4 +255,26 @@ public class Main {
 		boolean agregado=concesionario.agregarVehiculo(auto);
 		JOptionPane.showMessageDialog(null,agregado?"El vehiculo fue agregado al inventario exitosamente":"El vehiculo ya existe y no fue agregado");
 	}
+	private static void eliminarVehiculo() {
+		String marca=JOptionPane.showInputDialog("Ingrese la marca del vehiculo que desea eliminar");
+		String modelo=JOptionPane.showInputDialog("Ingrese el modelo del vehiculo que desea eliminar");
+		boolean eliminado=concesionario.eliminarVehiculo(marca, modelo);
+		JOptionPane.showMessageDialog(null, eliminado?"El vehiculo fue eliminado con exito":"El vehiculo no existe en el inventario");
+		}
+	private static void actualizarInformacionVehiculo() {
+		String marca=JOptionPane.showInputDialog("Ingrese la marca del vehiculo que desea eliminar");
+		String modelo=JOptionPane.showInputDialog("Ingrese el modelo del vehiculo que desea eliminar");
+		
+	}
+	
+	//Gestion de ventas
+	private static void registrarVenta() {
+	}
+	
+	
+	//Gestion de inventario
+	
+	private static void actualizarInventario() {
+	}
+	
 }
