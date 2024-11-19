@@ -43,6 +43,13 @@ public class Mantenimiento {
 	public LocalDate getFechaMantenimiento() {
 		return fechaMantenimiento;
 	}
+
+	@Override
+	public String toString() {
+		return "Mantenimiento [vehiculo=" + vehiculo + ", tipoMantenimiento=" + tipoMantenimiento
+				+ ", fechaMantenimiento=" + fechaMantenimiento + ", costo=" + costo + "]";
+	}
+	
 	
 	
 	

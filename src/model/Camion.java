@@ -1,6 +1,6 @@
 package model;
 
-public class Camion extends Vehiculo {
+public class Camion extends Vehiculo implements VentaVehiculo,MantenimientoVehiculo {
 	private double capacidadCarga;
 	private String tipoCamion;
 	private int ruedas;
@@ -55,5 +55,17 @@ public class Camion extends Vehiculo {
 
 	public void setCilindraje(int cilindraje) {
 		this.cilindraje = cilindraje;
+	}
+
+	@Override
+	public double calcularPrecioVenta(double precioVenta) {
+		double precioConComision=(precioVenta*0.15)+precioVenta;
+		return precioConComision;
+	}
+
+	@Override
+	public double calcularPrecioMantenimiento(double precioMantenimiento) {
+		double precioConComision=(precioMantenimiento*0.15)+precioMantenimiento;
+		return precioConComision;
 	}
 }

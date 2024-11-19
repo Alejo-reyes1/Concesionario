@@ -1,12 +1,17 @@
 package Service;
 
+import java.time.LocalDate;
+
 import javax.swing.JOptionPane;
 
 import model.Automovil;
 import model.Camion;
 import model.Cliente;
 import model.Concesionario;
+import model.Mantenimiento;
 import model.Motocicleta;
+import model.Vehiculo;
+import model.Venta;
 
 public class Main {
 	
@@ -98,7 +103,11 @@ public class Main {
 	private static void gestionMantenimiento(int opt) {
 		switch(opt) {
 		case 1:
-			
+			registrarMantenimiento();
+			break;
+		case 2:
+			consultarMantenimiento();
+			break;
 		}
 	}
 
@@ -121,6 +130,9 @@ public class Main {
 		switch(opt) {
 		case 1:
 			registrarVenta();
+			break;
+		case 2:
+			historialVenta();
 			break;
 		}
 		
@@ -151,6 +163,8 @@ public class Main {
 			eliminarVehiculo();
 			break;
 		case 3:
+			buscarVehiculo();
+			break;
 			
 		case 4:
 			actualizarInformacionVehiculo();
@@ -266,15 +280,84 @@ public class Main {
 		String modelo=JOptionPane.showInputDialog("Ingrese el modelo del vehiculo que desea eliminar");
 		
 	}
+	private static void buscarVehiculo() {
+		String marca=JOptionPane.showInputDialog("Ingrese la marca del vehiculo");
+		String modelo=JOptionPane.showInputDialog("Ingrese el modelo del vehiculo");
+		int tipoVehiculo=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el tipo de vehiculo\n 1.Automovil\n 2.Motocicleta\n 3.Camion"));  
+		Vehiculo v=concesionario.buscarVehiculo(marca,modelo,tipoVehiculo);
+		JOptionPane.showMessageDialog(null, v!=null?"El vehiculo fue encontrado con exito y su informacion es":"El vehiculo no fue encontrado");
+	}
+	
 	
 	//Gestion de ventas
 	private static void registrarVenta() {
+		String nombreCliente=JOptionPane.showInputDialog("Ingrese el nombre del cliente ");
+		String direccionCliente=JOptionPane.showInputDialog("Ingrese la direccion del cliente");
+		String telefonoCliente=JOptionPane.showInputDialog("Ingrese el telefono del cliente");
+		Cliente cliente=concesionario.buscarCliente(nombreCliente, direccionCliente, telefonoCliente);
+		String marca=JOptionPane.showInputDialog("Ingrese la marca del vehiculo");
+		String modelo=JOptionPane.showInputDialog("Ingrese el modelo del vehiculo");
+		int tipoVehiculo=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el tipo de vehiculo\n 1.Automovil\n 2.Motocicleta\n 3.Camion"));
+		double precioVenta=(Double.parseDouble(JOptionPane.showInputDialog("Ingrese el precio de venta del vehiculo")));
+		Vehiculo vehiculo=concesionario.buscarVehiculo(marca,modelo,tipoVehiculo);
+		if(cliente!=null && vehiculo!=null) {
+			double precioVentaComision=concesionario.calcularPrecioVenta(tipoVehiculo,precioVenta,vehiculo);
+			Venta v=new Venta(cliente,vehiculo,precioVentaComision);
+			concesionario.agregarVenta(vehiculo, cliente, v);
+		}
+	}
+	private static void historialVenta() {
+		String listaHistorial="";
+		int opcionBusqueda=Integer.parseInt(JOptionPane.showInputDialog("Ingrese la opcion con la que desea buscar la venta\n 1.Filtrar por cliente\n 2.Filtrar por vehiculo\n 3.filtrar por fecha"));
+		switch(opcionBusqueda) {
+		case 1:
+			String nombre=JOptionPane.showInputDialog("Ingrese el nombre del usuario que desea buscar.");
+			String direccion=JOptionPane.showInputDialog("Ingrese la direccion del usuario que desea buscar.");
+			String telefono=JOptionPane.showInputDialog("Ingrese el telefono del usuario que desea buscar.");
+			Cliente c=concesionario.buscarCliente(nombre, direccion, telefono);
+			listaHistorial=concesionario.consultarVentas(c);
+			break;
+		case 2:
+			String marca=JOptionPane.showInputDialog("Ingrese la marca del vehiculo");
+			String modelo=JOptionPane.showInputDialog("Ingrese el modelo del vehiculo");
+			int tipoVehiculo=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el tipo de vehiculo\n 1.Automovil\n 2.Motocicleta\n 3.Camion"));  
+			Vehiculo v=concesionario.buscarVehiculo(marca,modelo,tipoVehiculo);
+			listaHistorial=concesionario.consultarVentas(v);
+			break;
+		case 3:
+			LocalDate fecha=LocalDate.parse(JOptionPane.showInputDialog("Ingrese la fecha en este formato YYYY-MM-DD"));
+			listaHistorial=concesionario.consultarVenta(fecha);
+			break;
+		}
 	}
 	
 	
 	//Gestion de inventario
-	
 	private static void actualizarInventario() {
+		
 	}
 	
+	//Gestion de mantenimiento
+	private static void registrarMantenimiento() {
+		String marca=JOptionPane.showInputDialog("Ingrese la marca del vehiculo");
+		String modelo=JOptionPane.showInputDialog("Ingrese el modelo del vehiculo");
+		int tipoVehiculo=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el tipo de vehiculo\n 1.Automovil\n 2.Motocicleta\n 3.Camion"));
+		Vehiculo vehiculo=concesionario.buscarVehiculo(marca,modelo,tipoVehiculo);
+		if(vehiculo!=null) {
+			String tipoMantenimiento=JOptionPane.showInputDialog("Ingrese el tipo de mantenimiento");
+			double precioMantenimiento=Double.parseDouble(JOptionPane.showInputDialog("Ingrese el costo del mantenimiento"));
+			double precioMantenimientoComision=concesionario.calcularPrecioMantenimiento(tipoVehiculo,precioMantenimiento,vehiculo);
+			Mantenimiento m= new Mantenimiento(vehiculo,tipoMantenimiento,precioMantenimientoComision);
+			boolean agregado=concesionario.registrarMantenimiento(m);
+			JOptionPane.showMessageDialog(null, agregado?"El mantemineto fue registrado":"El mantenimiento ya existe y no fue agregado");
+		}
+	}
+	private static void consultarMantenimiento() {
+		String marca=JOptionPane.showInputDialog("Ingrese la marca del vehiculo");
+		String modelo=JOptionPane.showInputDialog("Ingrese el modelo del vehiculo");
+		int tipoVehiculo=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el tipo de vehiculo\n 1.Automovil\n 2.Motocicleta\n 3.Camion"));
+		Vehiculo vehiculo=concesionario.buscarVehiculo(marca,modelo,tipoVehiculo);
+		String consultarMantenimientoVehiculo=concesionario.consultarMantenimiento(vehiculo);
+		JOptionPane.showMessageDialog(null,consultarMantenimientoVehiculo);
+	}
 }

@@ -1,6 +1,6 @@
 package model;
 
-public class Vehiculo {
+public class Vehiculo{
 	private String marca;
 	private String modelo;
 	private String VIN;
@@ -51,9 +51,4 @@ public class Vehiculo {
 	public void setAño(int año) {
 		this.año = año;
 	}
-	
-	
-	
-	
-
 }

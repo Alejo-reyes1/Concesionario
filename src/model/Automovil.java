@@ -1,6 +1,6 @@
 package model;
 
-public class Automovil extends Vehiculo {
+public class Automovil extends Vehiculo implements VentaVehiculo,MantenimientoVehiculo {
 	private int puertas;
 	private String tipoCombustible;
 	private String transmision;
@@ -45,5 +45,17 @@ public class Automovil extends Vehiculo {
 
 	public void setTraccion(String traccion) {
 		this.traccion = traccion;
+	}
+
+	@Override
+	public double calcularPrecioVenta(double precioVenta) {
+		double precioConComision=(precioVenta*0.1)+precioVenta;
+		return precioConComision;
+	}
+
+	@Override
+	public double calcularPrecioMantenimiento(double precioMantenimiento) {
+		double precioConComision=(precioMantenimiento*0.1)+precioMantenimiento;
+		return precioConComision;
 	}
 }

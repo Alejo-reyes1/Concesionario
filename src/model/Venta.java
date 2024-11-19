@@ -6,7 +6,7 @@ public class Venta {
 	private Cliente cliente;
 	private Vehiculo vehiculo;
 	private final LocalDate fechaVenta;
-	private double precioVenta;
+	private final double precioVenta;
 	
 	public Venta(Cliente cliente, Vehiculo vehiculo, double precioVenta) {
 		this.cliente = cliente;
@@ -34,14 +34,16 @@ public class Venta {
 	public double getPrecioVenta() {
 		return precioVenta;
 	}
-
-	public void setPrecioVenta(double precioVenta) {
-		this.precioVenta = precioVenta;
-	}
-
 	public LocalDate getFechaVenta() {
 		return fechaVenta;
 	}
+
+	@Override
+	public String toString() {
+		return "Venta [cliente=" + cliente + ", vehiculo=" + vehiculo + ", fechaVenta=" + fechaVenta + ", precioVenta="
+				+ precioVenta + "]";
+	}
+	
 	
 	
 	

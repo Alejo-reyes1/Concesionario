@@ -1,6 +1,6 @@
 package model;
 
-public class Motocicleta extends Vehiculo {
+public class Motocicleta extends Vehiculo  implements VentaVehiculo,MantenimientoVehiculo{
 	private String manillar;
 	private int ruedas;
 	private String tipoFreno;
@@ -45,5 +45,17 @@ public class Motocicleta extends Vehiculo {
 
 	public void setNumeroEjes(int numeroEjes) {
 		this.numeroEjes = numeroEjes;
+	}
+
+	@Override
+	public double calcularPrecioVenta(double precioVenta) {
+		double precioConComision=(precioVenta*0.07)+precioVenta;
+		return precioConComision;
+	}
+
+	@Override
+	public double calcularPrecioMantenimiento(double precioMantenimiento) {
+		double precioConComision=(precioMantenimiento*0.07)+precioMantenimiento;
+		return precioConComision;
 	}
 }
