@@ -58,4 +58,144 @@ public class Automovil extends Vehiculo implements VentaVehiculo,MantenimientoVe
 		double precioConComision=(precioMantenimiento*0.1)+precioMantenimiento;
 		return precioConComision;
 	}
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+public class AutomovilTest {
+
+    private Automovil automovil;
+
+    @Before
+    public void setUp() {
+        // Crear una instancia de Automovil antes de cada test
+        automovil = new Automovil("Toyota", "Corolla", "1HGBH41JXMN109186", "Rojo", 50000, 2020, 4, "Gasolina", "Automática", "Delantera");
+    }
+
+    // Test para la clase Vehiculo (heredados)
+    @Test
+    public void testGetMarca() {
+        assertEquals("Toyota", automovil.getMarca());
+    }
+
+    @Test
+    public void testSetMarca() {
+        automovil.setMarca("Honda");
+        assertEquals("Honda", automovil.getMarca());
+    }
+
+    @Test
+    public void testGetModelo() {
+        assertEquals("Corolla", automovil.getModelo());
+    }
+
+    @Test
+    public void testSetModelo() {
+        automovil.setModelo("Civic");
+        assertEquals("Civic", automovil.getModelo());
+    }
+
+    @Test
+    public void testGetVIN() {
+        assertEquals("1HGBH41JXMN109186", automovil.getVIN());
+    }
+
+    @Test
+    public void testSetVIN() {
+        automovil.setVIN("1HGBH41JXMN109200");
+        assertEquals("1HGBH41JXMN109200", automovil.getVIN());
+    }
+
+    @Test
+    public void testGetColor() {
+        assertEquals("Rojo", automovil.getColor());
+    }
+
+    @Test
+    public void testSetColor() {
+        automovil.setColor("Azul");
+        assertEquals("Azul", automovil.getColor());
+    }
+
+    @Test
+    public void testGetKilometraje() {
+        assertEquals(50000, automovil.getKilometraje());
+    }
+
+    @Test
+    public void testSetKilometraje() {
+        automovil.setKilometraje(60000);
+        assertEquals(60000, automovil.getKilometraje());
+    }
+
+    @Test
+    public void testGetAño() {
+        assertEquals(2020, automovil.getAño());
+    }
+
+    @Test
+    public void testSetAño() {
+        automovil.setAño(2021);
+        assertEquals(2021, automovil.getAño());
+    }
+
+    // Test para la clase Automovil
+    @Test
+    public void testGetPuertas() {
+        assertEquals(4, automovil.getPuertas());
+    }
+
+    @Test
+    public void testSetPuertas() {
+        automovil.setPuertas(5);
+        assertEquals(5, automovil.getPuertas());
+    }
+
+    @Test
+    public void testGetTipoCombustible() {
+        assertEquals("Gasolina", automovil.getTipoCombustible());
+    }
+
+    @Test
+    public void testSetTipoCombustible() {
+        automovil.setTipoCombustible("Diesel");
+        assertEquals("Diesel", automovil.getTipoCombustible());
+    }
+
+    @Test
+    public void testGetTransmision() {
+        assertEquals("Automática", automovil.getTransmision());
+    }
+
+    @Test
+    public void testSetTransmision() {
+        automovil.setTransmision("Manual");
+        assertEquals("Manual", automovil.getTransmision());
+    }
+
+    @Test
+    public void testGetTraccion() {
+        assertEquals("Delantera", automovil.getTraccion());
+    }
+
+    @Test
+    public void testSetTraccion() {
+        automovil.setTraccion("Trasera");
+        assertEquals("Trasera", automovil.getTraccion());
+    }
+
+    // Test para los métodos de las interfaces (VentaVehiculo y MantenimientoVehiculo)
+    @Test
+    public void testCalcularPrecioVenta() {
+        double precioVenta = 10000;
+        double precioEsperado = 11000; // 10% de comisión sobre 10000
+        assertEquals(precioEsperado, automovil.calcularPrecioVenta(precioVenta), 0.01);
+    }
+
+    @Test
+    public void testCalcularPrecioMantenimiento() {
+        double precioMantenimiento = 500;
+        double precioEsperado = 550; // 10% de comisión sobre 500
+        assertEquals(precioEsperado, automovil.calcularPrecioMantenimiento(precioMantenimiento), 0.01);
+    }
 }
