@@ -53,5 +53,87 @@ public class Vehiculo{
 		return " Vehiculo [marca=" + marca + ", modelo=" + modelo + ", VIN=" + VIN + ", color=" + color
 				+ ", kilometraje=" + kilometraje + ", año=" + año + "]";
 	}
+<<<<<<< HEAD
 	
+=======
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+public class VehiculoTest {
+
+    private Vehiculo vehiculo;
+
+    @Before
+    public void setUp() {
+        // Crear una instancia de Vehiculo antes de cada test
+        vehiculo = new Vehiculo("Toyota", "Corolla", "1HGBH41JXMN109186", "Rojo", 50000, 2020);
+    }
+
+    @Test
+    public void testGetMarca() {
+        assertEquals("Toyota", vehiculo.getMarca());
+    }
+
+    @Test
+    public void testSetMarca() {
+        vehiculo.setMarca("Honda");
+        assertEquals("Honda", vehiculo.getMarca());
+    }
+
+    @Test
+    public void testGetModelo() {
+        assertEquals("Corolla", vehiculo.getModelo());
+    }
+
+    @Test
+    public void testSetModelo() {
+        vehiculo.setModelo("Civic");
+        assertEquals("Civic", vehiculo.getModelo());
+    }
+
+    @Test
+    public void testGetVIN() {
+        assertEquals("1HGBH41JXMN109186", vehiculo.getVIN());
+    }
+
+    @Test
+    public void testSetVIN() {
+        vehiculo.setVIN("1HGBH41JXMN109200");
+        assertEquals("1HGBH41JXMN109200", vehiculo.getVIN());
+    }
+
+    @Test
+    public void testGetColor() {
+        assertEquals("Rojo", vehiculo.getColor());
+    }
+
+    @Test
+    public void testSetColor() {
+        vehiculo.setColor("Azul");
+        assertEquals("Azul", vehiculo.getColor());
+    }
+
+    @Test
+    public void testGetKilometraje() {
+        assertEquals(50000, vehiculo.getKilometraje());
+    }
+
+    @Test
+    public void testSetKilometraje() {
+        vehiculo.setKilometraje(60000);
+        assertEquals(60000, vehiculo.getKilometraje());
+    }
+
+    @Test
+    public void testGetAño() {
+        assertEquals(2020, vehiculo.getAño());
+    }
+
+    @Test
+    public void testSetAño() {
+        vehiculo.setAño(2021);
+        assertEquals(2021, vehiculo.getAño());
+    }
+>>>>>>> 914402a9152014729c7c076bb23ba136f970e42c
 }

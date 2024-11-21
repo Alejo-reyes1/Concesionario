@@ -145,6 +145,7 @@ public class Concesionario {
 		}
 		return null;
 	}
+<<<<<<< HEAD
 	public void actualizarInformacionVehiculo(Vehiculo v,String nuevoColor,int nuevoKilometraje,int puertas, String tipoCombustible, String transmsion, String traccion) {
 		v.setColor(nuevoColor);
 		v.setKilometraje(nuevoKilometraje);
@@ -163,6 +164,19 @@ public class Concesionario {
 		((Motocicleta)v).setRuedas(ruedas);
 		((Motocicleta)v).setManillar(manillar);
 		((Motocicleta)v).setNumeroEjes(numeroEjes);
+=======
+	private void actualizarInformacionAutomovil(Vehiculo v) {
+		((Automovil)v).setPuertas(Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de puertas del Automovil")));
+		((Automovil)v).setTipoCombistible(JOptionPane.showInputDialog("Ingrese el tipo de combustible del Automovil"));
+		((Automovil)v).setTransmision(JOptionPane.showInputDialog("Ingrese el tipo de transmision del Automovil")));
+		((Automovil)v).setTraccion(JOptionPane.showInputDialog("Ingrese el tipo de ttracion del Automovil"));
+	}
+	private void actualizarInformacionMotocicleta(Vehiculo v) {
+		((Motocicleta)v).setManillar(JOptionPane.showInputDialog("Ingrese el tipo de manillar de la motocicelta")));
+		((Motocicleta)v).setRuedas(Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de ruedas de la mototcicleta")));
+		((Motocicleta)v).setTipoFreno(JOptionPane.showInputDialog("Ingrese el tipo de freno de la motocicleta"));
+		((Motocicleta)v).setNumeroEjes(Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero de ejes de la motocicleta")));
+>>>>>>> 914402a9152014729c7c076bb23ba136f970e42c
 	}
 	public void actualizarInformacionVehiculo(Vehiculo v,String nuevoColor,int nuevoKilometraje,double capacidadCarga,String tipoCamion,int ruedas, String tipoFreno, int cilindraje) {
 		v.setColor(nuevoColor);
@@ -288,4 +302,114 @@ public class Concesionario {
 		}
 		return mantenimientoVehiculo;
 	}
+
+package test;
+
+import model.*;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+import java.time.LocalDate;
+
+public class ConcesionarioTest {
+
+    private Concesionario concesionario;
+    private Cliente cliente;
+    private Vehiculo vehiculo;
+    private Venta venta;
+    private Mantenimiento mantenimiento;
+
+    @Before
+    public void setUp() {
+        concesionario = new Concesionario("AutoConcesion");
+        cliente = new Cliente("Juan Pérez", "Calle 123", "555123456", "juanperez@email.com");
+        vehiculo = new Automovil("Toyota", "Corolla", "1234VIN", "Azul", 15000, 2022, 4, "Gasolina", "Manual", "Tracción delantera");
+        venta = new Venta(cliente, vehiculo, LocalDate.now(), 20000.0);
+        mantenimiento = new Mantenimiento(vehiculo, LocalDate.now(), "Cambio de aceite", 200.0);
+    }
+
+    @Test
+    public void testAgregarCliente() {
+        assertTrue("El cliente debería ser agregado correctamente", concesionario.agregarCliente(cliente));
+    }
+
+    @Test
+    public void testEliminarCliente() {
+        concesionario.agregarCliente(cliente);
+        assertTrue("El cliente debería ser eliminado correctamente", concesionario.eliminarCliente("555123456", "juanperez@email.com"));
+        assertFalse("El cliente ya ha sido eliminado", concesionario.eliminarCliente("555123456", "juanperez@email.com"));
+    }
+
+    @Test
+    public void testBuscarCliente() {
+        concesionario.agregarCliente(cliente);
+        Cliente encontrado = concesionario.buscarCliente("Juan Pérez", "Calle 123", "555123456");
+        assertNotNull("El cliente debería ser encontrado", encontrado);
+        assertEquals("El cliente encontrado debería ser el correcto", cliente, encontrado);
+    }
+
+    @Test
+    public void testAgregarVehiculo() {
+        assertTrue("El vehículo debería ser agregado correctamente", concesionario.agregarVehiculo(vehiculo));
+    }
+
+    @Test
+    public void testEliminarVehiculo() {
+        concesionario.agregarVehiculo(vehiculo);
+        assertTrue("El vehículo debería ser eliminado correctamente", concesionario.eliminarVehiculo("Toyota", "Corolla"));
+        assertFalse("El vehículo ya ha sido eliminado", concesionario.eliminarVehiculo("Toyota", "Corolla"));
+    }
+
+    @Test
+    public void testBuscarVehiculo() {
+        concesionario.agregarVehiculo(vehiculo);
+        Vehiculo encontrado = concesionario.buscarVehiculo("Toyota", "Corolla", 1); // 1 para Automovil
+        assertNotNull("El vehículo debería ser encontrado", encontrado);
+        assertEquals("El vehículo encontrado debería ser el correcto", vehiculo, encontrado);
+    }
+
+    @Test
+    public void testAgregarVenta() {
+        concesionario.agregarCliente(cliente);
+        concesionario.agregarVehiculo(vehiculo);
+        assertTrue("La venta debería ser agregada correctamente", concesionario.agregarVenta(vehiculo, cliente, venta));
+    }
+
+    @Test
+    public void testCalcularPrecioVenta() {
+        concesionario.agregarVehiculo(vehiculo);
+        double precioVentaComision = concesionario.calcularPrecioVenta(1, 20000.0, vehiculo);
+        assertEquals("El precio de la venta debería ser calculado correctamente", 20000.0, precioVentaComision, 0.01);
+    }
+
+    @Test
+    public void testConsultarVentasPorCliente() {
+        concesionario.agregarCliente(cliente);
+        concesionario.agregarVehiculo(vehiculo);
+        concesionario.agregarVenta(vehiculo, cliente, venta);
+        String historial = concesionario.consultarVentas(cliente);
+        assertTrue("El historial de ventas debería contener la venta realizada", historial.contains("Venta"));
+    }
+
+    @Test
+    public void testRegistrarMantenimiento() {
+        concesionario.agregarVehiculo(vehiculo);
+        assertTrue("El mantenimiento debería ser registrado correctamente", concesionario.registrarMantenimiento(mantenimiento));
+    }
+
+    @Test
+    public void testCalcularPrecioMantenimiento() {
+        concesionario.agregarVehiculo(vehiculo);
+        double precioMantenimientoComision = concesionario.calcularPrecioMantenimiento(1, 200.0, vehiculo);
+        assertEquals("El precio del mantenimiento debería ser calculado correctamente", 200.0, precioMantenimientoComision, 0.01);
+    }
+
+    @Test
+    public void testConsultarMantenimiento() {
+        concesionario.agregarVehiculo(vehiculo);
+        concesionario.registrarMantenimiento(mantenimiento);
+        String historialMantenimiento = concesionario.consultarMantenimiento(vehiculo);
+        assertTrue("El historial de mantenimiento debería contener el mantenimiento registrado", historialMantenimiento.contains("Cambio de aceite"));
+    }
 }
