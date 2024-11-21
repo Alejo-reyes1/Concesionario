@@ -334,8 +334,54 @@ public class Main {
 	
 	//Gestion de inventario
 	private static void actualizarInventario() {
-		
-	}
+    // Solicitar los datos del vehículo a buscar
+    String marca = JOptionPane.showInputDialog("Ingrese la marca del vehículo a actualizar:");
+    String modelo = JOptionPane.showInputDialog("Ingrese el modelo del vehículo a actualizar:");
+    int tipoVehiculo = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el tipo de vehículo:\n1. Automóvil\n2. Motocicleta\n3. Camión"));
+
+    // Buscar el vehículo en el concesionario
+    Vehiculo vehiculo = concesionario.buscarVehiculo(marca, modelo, tipoVehiculo);
+
+    if (vehiculo != null) {
+        // Mostrar los datos actuales y opciones para actualizar
+        JOptionPane.showMessageDialog(null, "Vehículo encontrado:\n" + vehiculo.toString());
+        int opcionActualizar;
+        do {
+            opcionActualizar = Integer.parseInt(JOptionPane.showInputDialog(
+                "Seleccione el atributo a actualizar:\n" +
+                "1. Color\n" +
+                "2. Kilometraje\n" +
+                "3. Año\n" +
+                "4. Salir"
+            ));
+
+            switch (opcionActualizar) {
+                case 1:
+                    String nuevoColor = JOptionPane.showInputDialog("Ingrese el nuevo color del vehículo:");
+                    vehiculo.setColor(nuevoColor);
+                    break;
+                case 2:
+                    int nuevoKilometraje = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el nuevo kilometraje del vehículo:"));
+                    vehiculo.setKilometraje(nuevoKilometraje);
+                    break;
+                case 3:
+                    int nuevoAño = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el nuevo año del vehículo:"));
+                    vehiculo.setAño(nuevoAño);
+                    break;
+                case 4:
+                    JOptionPane.showMessageDialog(null, "Actualización completada.");
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Opción no válida.");
+            }
+        } while (opcionActualizar != 4);
+
+        // Confirmar los cambios
+        JOptionPane.showMessageDialog(null, "Los cambios han sido guardados:\n" + vehiculo.toString());
+    } else {
+        // Manejar el caso en el que el vehículo no se encuentra
+        JOptionPane.showMessageDialog(null, "El vehículo no fue encontrado en el inventario.");
+    }
 	
 	//Gestion de mantenimiento
 	private static void registrarMantenimiento() {
