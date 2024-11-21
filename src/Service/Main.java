@@ -19,6 +19,7 @@ public class Main {
 	public static Concesionario concesionario=new Concesionario ("Concesionario");
 
 	public static void main(String[] args) {
+		quemarDatos();
 		int opcionSubMenu;
 		String menuPrincipal="Menu principal\n"+
 		"Ingrese el numero correspondiente a la gestion deseada\n"+
@@ -36,6 +37,17 @@ public class Main {
 			opcionSubMenu = Integer.parseInt(JOptionPane.showInputDialog(null,mensajeSubMenu));
 			opcionSubMenu(opcionSeleccionada,opcionSubMenu);
 		} while (opcionSeleccionada != 6);
+	}
+	
+	private static void quemarDatos() {
+		Automovil v1 = new Automovil("Toyota", "Corolla", "1HGBH41JXMN109186", "Rojo", 50000, 2020, 4, "Gasolina", "Automática", "Delantera");
+		 concesionario.agregarVehiculo(v1);
+		 Cliente c1 = new Cliente("Juan Perez", "Calle Falsa 123", "555-1234", "juan.perez@example.com");
+		 concesionario.agregarCliente(c1);
+		 Venta venta = new Venta(c1, v1, 15000.00);
+		 concesionario.agregarVenta(v1, c1, venta);
+		 Mantenimiento m1=new Mantenimiento(v1,"lavado",50000);
+		 concesionario.registrarMantenimiento(m1);
 	}
 
 	private static String opcionMenu(int opt) {
@@ -65,7 +77,7 @@ public class Main {
 		case 4:
 			mensaje="Gestion de inventario.\n"+
 			"1.Registrar vehiculo en el inventario\n"+
-			"2.Eliminar Vehiculo del inventario"+
+			"2.Eliminar Vehiculo del inventario\n"+
 			"3.Actualizar inventario";
 			break;
 		case 5:
@@ -168,6 +180,7 @@ public class Main {
 			
 		case 4:
 			actualizarInformacionVehiculo();
+			break;
 		}	
 	}
 	
@@ -278,14 +291,64 @@ public class Main {
 	private static void actualizarInformacionVehiculo() {
 		String marca=JOptionPane.showInputDialog("Ingrese la marca del vehiculo que desea eliminar");
 		String modelo=JOptionPane.showInputDialog("Ingrese el modelo del vehiculo que desea eliminar");
-		
+		int tipoVehiculo = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el tipo de vehículo:\n1. Automóvil\n2. Motocicleta\n3. Camión"));
+	    Vehiculo vehiculo = concesionario.buscarVehiculo(marca, modelo, tipoVehiculo);
+	    if(vehiculo!=null) {
+	    	 switch (tipoVehiculo) {
+	 	    case 1:
+	 	    	actualizarAutomovil(vehiculo);
+	 	    	break;
+	 	    case 2:
+	 	    	actualizarMotocicleta(vehiculo);
+	 	    	break;
+	 	    case 3:
+	 	    	actualizarInformacionCamion(vehiculo);
+	 	    	break;
+	 	    }
+	    }
+	
 	}
+	private static void actualizarInformacionCamion(Vehiculo vehiculo) {
+		String nuevoColor = JOptionPane.showInputDialog("Ingrese el nuevo color del vehículo:");
+	    int nuevoKilometraje = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el nuevo kilometraje del vehículo:"));
+	    Double capacidadCargaNueva=Double.parseDouble(JOptionPane.showInputDialog("Ingrese la capacidad de carga del camion"));
+		String tipoCamionNuevo=JOptionPane.showInputDialog("Ingrese el tipo de camion");
+		int nuevoNumeroRuedas=Integer.parseInt(JOptionPane.showInputDialog("Ingrese las ruedas del camion"));
+		String nuevoTipoFreno=JOptionPane.showInputDialog("Ingrese el tipo de freno del camion");
+		int nuevoCilindraje=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el cilindraje del camion")); 
+		concesionario.actualizarInformacionVehiculo(vehiculo, nuevoColor, nuevoKilometraje, capacidadCargaNueva, tipoCamionNuevo, nuevoNumeroRuedas, nuevoTipoFreno, nuevoCilindraje);
+		JOptionPane.showMessageDialog(null, "Se actualizo correctamente y su informacion es "+vehiculo.toString());
+	}
+
+	//Metodos para actualizar informacion del vehiculo
+	private static void actualizarAutomovil(Vehiculo vehiculo) {
+	 String nuevoColor = JOptionPane.showInputDialog("Ingrese el nuevo color del vehículo:");
+     int nuevoKilometraje = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el nuevo kilometraje del vehículo:"));
+     int puertas=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero de puertas del vehiculo"));
+    String tipoCombustible = JOptionPane.showInputDialog(null, "Ingrese el tipo de combustible (ej. Gasolina, Diesel):");
+    String  transmision = JOptionPane.showInputDialog(null, "Ingrese el tipo de transmisión (ej. Manual, Automática):");
+    String traccion = JOptionPane.showInputDialog(null, "Ingrese el tipo de tracción (ej. 4x2, 4x4):");
+    concesionario.actualizarInformacionVehiculo(vehiculo, nuevoColor, nuevoKilometraje, puertas, tipoCombustible, transmision, traccion);
+    JOptionPane.showMessageDialog(null,"Se actualizo correctamente y su informacion es "+vehiculo.toString());
+	}
+	private static void actualizarMotocicleta(Vehiculo vehiculo) {
+		String nuevoColor = JOptionPane.showInputDialog("Ingrese el nuevo color del vehículo:");
+	    int nuevoKilometraje = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el nuevo kilometraje del vehículo:"));
+	    String nuevoManillar=JOptionPane.showInputDialog("Ingrese el nuevo manillar");
+	    int ruedas=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero de ruedas del vehiculo"));
+	    String tipoFrenoNuevo=JOptionPane.showInputDialog("Ingrese el tipo de freno");
+	    int numeroEjes=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero de ejes del vehiculo"));
+	    concesionario.actualizarInformacionVehiculo(vehiculo, nuevoColor, nuevoKilometraje, nuevoManillar, ruedas, tipoFrenoNuevo, numeroEjes);
+	    JOptionPane.showMessageDialog(null,"Se actualizo correctamente y su informacion es "+vehiculo.toString());
+	}
+		
+	
 	private static void buscarVehiculo() {
 		String marca=JOptionPane.showInputDialog("Ingrese la marca del vehiculo");
 		String modelo=JOptionPane.showInputDialog("Ingrese el modelo del vehiculo");
 		int tipoVehiculo=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el tipo de vehiculo\n 1.Automovil\n 2.Motocicleta\n 3.Camion"));  
 		Vehiculo v=concesionario.buscarVehiculo(marca,modelo,tipoVehiculo);
-		JOptionPane.showMessageDialog(null, v!=null?"El vehiculo fue encontrado con exito y su informacion es":"El vehiculo no fue encontrado");
+		JOptionPane.showMessageDialog(null, v!=null?"El vehiculo fue encontrado con exito y su informacion es"+v.toString():"El vehiculo no fue encontrado");
 	}
 	
 	
@@ -316,6 +379,7 @@ public class Main {
 			String telefono=JOptionPane.showInputDialog("Ingrese el telefono del usuario que desea buscar.");
 			Cliente c=concesionario.buscarCliente(nombre, direccion, telefono);
 			listaHistorial=concesionario.consultarVentas(c);
+			JOptionPane.showMessageDialog(null, listaHistorial);
 			break;
 		case 2:
 			String marca=JOptionPane.showInputDialog("Ingrese la marca del vehiculo");
@@ -323,20 +387,74 @@ public class Main {
 			int tipoVehiculo=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el tipo de vehiculo\n 1.Automovil\n 2.Motocicleta\n 3.Camion"));  
 			Vehiculo v=concesionario.buscarVehiculo(marca,modelo,tipoVehiculo);
 			listaHistorial=concesionario.consultarVentas(v);
+			JOptionPane.showMessageDialog(null, listaHistorial);
 			break;
 		case 3:
 			LocalDate fecha=LocalDate.parse(JOptionPane.showInputDialog("Ingrese la fecha en este formato YYYY-MM-DD"));
 			listaHistorial=concesionario.consultarVenta(fecha);
+			JOptionPane.showMessageDialog(null, listaHistorial);
 			break;
 		}
 	}
 	
 	
 	//Gestion de inventario
-	private static void actualizarInventario() {
-		
-	}
 	
+	private static void actualizarInventario() {
+		String listaInventario=concesionario.actualizarInventario();
+		JOptionPane.showMessageDialog(null, listaInventario);
+	}
+	/**private static void actualizarInventario() {
+    // Solicitar los datos del vehículo a buscar
+    String marca = JOptionPane.showInputDialog("Ingrese la marca del vehículo a actualizar:");
+    String modelo = JOptionPane.showInputDialog("Ingrese el modelo del vehículo a actualizar:");
+    int tipoVehiculo = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el tipo de vehículo:\n1. Automóvil\n2. Motocicleta\n3. Camión"));
+
+    // Buscar el vehículo en el concesionario
+    Vehiculo vehiculo = concesionario.buscarVehiculo(marca, modelo, tipoVehiculo);
+
+    if (vehiculo != null) {
+        // Mostrar los datos actuales y opciones para actualizar
+        JOptionPane.showMessageDialog(null, "Vehículo encontrado:\n" + vehiculo.toString());
+        int opcionActualizar;
+        do {
+            opcionActualizar = Integer.parseInt(JOptionPane.showInputDialog(
+                "Seleccione el atributo a actualizar:\n" +
+                "1. Color\n" +
+                "2. Kilometraje\n" +
+                "3. Año\n" +
+                "4. Salir"
+            ));
+
+            switch (opcionActualizar) {
+                case 1:
+                    String nuevoColor = JOptionPane.showInputDialog("Ingrese el nuevo color del vehículo:");
+                    vehiculo.setColor(nuevoColor);
+                    break;
+                case 2:
+                    int nuevoKilometraje = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el nuevo kilometraje del vehículo:"));
+                    vehiculo.setKilometraje(nuevoKilometraje);
+                    break;
+                case 3:
+                    int nuevoAño = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el nuevo año del vehículo:"));
+                    vehiculo.setAño(nuevoAño);
+                    break;
+                case 4:
+                    JOptionPane.showMessageDialog(null, "Actualización completada.");
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Opción no válida.");
+            }
+        } while (opcionActualizar != 4);
+
+        // Confirmar los cambios
+        JOptionPane.showMessageDialog(null, "Los cambios han sido guardados:\n" + vehiculo.toString());
+    } else {
+        // Manejar el caso en el que el vehículo no se encuentra
+        JOptionPane.showMessageDialog(null, "El vehículo no fue encontrado en el inventario.");
+    }
+	}
+	*/
 	//Gestion de mantenimiento
 	private static void registrarMantenimiento() {
 		String marca=JOptionPane.showInputDialog("Ingrese la marca del vehiculo");

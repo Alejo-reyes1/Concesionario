@@ -6,7 +6,7 @@ public class Vehiculo{
 	private String VIN;
 	private String color;
 	private int kilometraje;
-	private int año;
+	private final int año;
 	public Vehiculo(String marca, String modelo, String vIN, String color, int kilometraje, int año) {
 		this.marca = marca;
 		this.modelo = modelo;
@@ -48,7 +48,10 @@ public class Vehiculo{
 	public int getAño() {
 		return año;
 	}
-	public void setAño(int año) {
-		this.año = año;
+	@Override
+	public String toString() {
+		return " Vehiculo [marca=" + marca + ", modelo=" + modelo + ", VIN=" + VIN + ", color=" + color
+				+ ", kilometraje=" + kilometraje + ", año=" + año + "]";
 	}
+	
 }

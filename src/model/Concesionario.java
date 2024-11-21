@@ -90,7 +90,7 @@ public class Concesionario {
 	}
 	public Cliente buscarCliente(String nombre, String direccion, String telefono) {
 		for(Cliente c:this.clientes) {
-			if(c.getNombre().equalsIgnoreCase(nombre)||c.getDireccion().equalsIgnoreCase(direccion)||c.getTelefono().equalsIgnoreCase(telefono)) {
+			if(c.getNombre().equalsIgnoreCase(nombre)&&c.getDireccion().equalsIgnoreCase(direccion)&&c.getTelefono().equalsIgnoreCase(telefono)) {
 				return c;
 			}
 		}
@@ -118,25 +118,8 @@ public class Concesionario {
 	}
 	public boolean eliminarVehiculo(String marca, String modelo) {
 		for(Vehiculo v:this.inventario) {
-			if(v.getMarca().equalsIgnoreCase(marca)||v.getModelo().equalsIgnoreCase(modelo)) {
+			if(v.getMarca().equalsIgnoreCase(marca)&&v.getModelo().equalsIgnoreCase(modelo)) {
 				this.inventario.remove(v);
-				return true;
-			}
-		}
-		return false;
-	}
-	public boolean actualizarInformacionVehiculo(String marca,String modelo) {
-		for(Vehiculo v:this.inventario) {
-			if(v.getMarca().equalsIgnoreCase(marca)||v.getModelo().equalsIgnoreCase(modelo)) {
-				actualizarInformacionBasica(v);
-				if(v instanceof Camion) {
-					actualizarInformacionCamion(v);
-				}else if(v instanceof Motocicleta) {
-					actualizarInformacionMotocicleta(v);
-					}
-				else if(v instanceof Automovil) {
-					actualizarInformacionAutomovil(v);
-				}
 				return true;
 			}
 		}
@@ -162,29 +145,34 @@ public class Concesionario {
 		}
 		return null;
 	}
-	private void actualizarInformacionAutomovil(Vehiculo v) {
+	public void actualizarInformacionVehiculo(Vehiculo v,String nuevoColor,int nuevoKilometraje,int puertas, String tipoCombustible, String transmsion, String traccion) {
+		v.setColor(nuevoColor);
+		v.setKilometraje(nuevoKilometraje);
+		((Automovil)v).setTipoCombustible(tipoCombustible);
+		((Automovil)v).setPuertas(puertas);
+		((Automovil)v).setTransmision(transmsion);
+		((Automovil)v).setTraccion(traccion);
+		
 		
 	}
-	private void actualizarInformacionMotocicleta(Vehiculo v) {
-		
+	public void actualizarInformacionVehiculo(Vehiculo v,String nuevoColor,int nuevoKilometraje,String manillar, int ruedas, String tipoFreno, int numeroEjes ) {
+		v.setColor(nuevoColor);
+		v.setKilometraje(nuevoKilometraje);
+		((Motocicleta)v).setKilometraje(nuevoKilometraje);
+		((Motocicleta)v).setManillar(manillar);
+		((Motocicleta)v).setRuedas(ruedas);
+		((Motocicleta)v).setManillar(manillar);
+		((Motocicleta)v).setNumeroEjes(numeroEjes);
 	}
-	private void actualizarInformacionBasica(Vehiculo v) {
-		v.setMarca(JOptionPane.showInputDialog("Ingrese la marca del vehiculo"));
-		v.setModelo(JOptionPane.showInputDialog("Ingrese el modelo del vehiculo"));
-		v.setVIN(JOptionPane.showInputDialog("Ingrese el VIN del vehiculo"));
-		v.setColor(JOptionPane.showInputDialog("Ingrese el color del vehiculo"));
-		v.setKilometraje(Integer.parseInt(JOptionPane.showInputDialog("Ingrese el kilometraje del vehiculo")));
-		v.setAño(Integer.parseInt(JOptionPane.showInputDialog("Ingrese el año del vehiculo")));
+	public void actualizarInformacionVehiculo(Vehiculo v,String nuevoColor,int nuevoKilometraje,double capacidadCarga,String tipoCamion,int ruedas, String tipoFreno, int cilindraje) {
+		v.setColor(nuevoColor);
+		v.setKilometraje(nuevoKilometraje);
+		((Camion)v).setCapacidadCarga(capacidadCarga);
+		((Camion)v).setTipoCamion(tipoCamion);
+		((Camion)v).setRuedas(ruedas);
+		((Camion)v).setTipoFreno(tipoFreno);
+		((Camion)v).setCilindraje(cilindraje);
 	}
-	
-	private void actualizarInformacionCamion(Vehiculo v) {
-		((Camion)v).setCapacidadCarga(Double.parseDouble(JOptionPane.showInputDialog("Ingrese la capacidad de carga del camion")));
-		((Camion)v).setTipoCamion(JOptionPane.showInputDialog("Ingrese el tipo de camion"));
-		((Camion)v).setRuedas(Integer.parseInt(JOptionPane.showInputDialog("Ingrese las ruedas del camion")));
-		((Camion)v).setTipoFreno(JOptionPane.showInputDialog("Ingrese el tipo de freno del camion"));
-		((Camion)v).setCilindraje(Integer.parseInt(JOptionPane.showInputDialog("Ingrese el cilindraje del camion")));
-	}
-	
 	//Metodos de gestion de ventas
 	public boolean agregarVenta(Vehiculo vehiculo, Cliente cliente,Venta e) {
 		boolean existeVenta=existeVenta(cliente,vehiculo);
@@ -243,6 +231,21 @@ public class Concesionario {
 			}
 		}
 		return historialVentas;
+	}
+	//Metodos de gestion de inventario
+	public String actualizarInventario() {
+		String listaInventario="La lista del inventario del concesionario es\n";
+		for(Venta ventas:this.ventas) {
+			for(Vehiculo vehiculo:this.inventario) {
+				if(ventas.getVehiculo().equals(vehiculo)) {
+					listaInventario+="El "+vehiculo.toString()+" fue vendido\n";
+				}
+				else {
+					listaInventario+="El "+vehiculo.toString()+" no ha sido vendido\n";
+				}
+			}
+		}
+		return listaInventario;
 	}
 	
 	//Metodos de gestion de mantenimineto
