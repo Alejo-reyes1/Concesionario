@@ -163,10 +163,16 @@ public class Concesionario {
 		return null;
 	}
 	private void actualizarInformacionAutomovil(Vehiculo v) {
-		
+		((Automovil)v).setPuertas(Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de puertas del Automovil")));
+		((Automovil)v).setTipoCombistible(JOptionPane.showInputDialog("Ingrese el tipo de combustible del Automovil"));
+		((Automovil)v).setTransmision(JOptionPane.showInputDialog("Ingrese el tipo de transmision del Automovil")));
+		((Automovil)v).setTraccion(JOptionPane.showInputDialog("Ingrese el tipo de ttracion del Automovil"));
 	}
 	private void actualizarInformacionMotocicleta(Vehiculo v) {
-		
+		((Motocicleta)v).setManillar(JOptionPane.showInputDialog("Ingrese el tipo de manillar de la motocicelta")));
+		((Motocicleta)v).setRuedas(Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de ruedas de la mototcicleta")));
+		((Motocicleta)v).setTipoFreno(JOptionPane.showInputDialog("Ingrese el tipo de freno de la motocicleta"));
+		((Motocicleta)v).setNumeroEjes(Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero de ejes de la motocicleta")));
 	}
 	private void actualizarInformacionBasica(Vehiculo v) {
 		v.setMarca(JOptionPane.showInputDialog("Ingrese la marca del vehiculo"));
